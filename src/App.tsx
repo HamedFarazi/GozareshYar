@@ -693,7 +693,7 @@ function App() {
               {renderCurrentStep()}
             </div>
 
-
+                  
           </div>
 
           {/* Desktop Form */}
