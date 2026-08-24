@@ -10,7 +10,6 @@ import {
   Users, 
   MessageSquare, 
   Sparkles,
-  ChevronLeft,
   ChevronRight
 } from 'lucide-react';
 import type { FormData } from './types';
@@ -54,13 +53,24 @@ function App() {
   const [copied, setCopied] = useState(false);
   const [showClearConfirm, setShowClearConfirm] = useState(false);
   const [currentStep, setCurrentStep] = useState<1 | 2 | 3 | 4 | 5>(1);
+  const [showMobileReport, setShowMobileReport] = useState(false);
+  const [showInfoPopup, setShowInfoPopup] = useState(true);
 
   const handleStepChange = (step: number) => {
     if (step >= 1 && step <= 5) {
       setCurrentStep(step as 1 | 2 | 3 | 4 | 5);
     }
   };
-  const [showMobileReport, setShowMobileReport] = useState(false);
+
+  // Hide info popup after 2 seconds on mobile
+  useEffect(() => {
+    if (showInfoPopup) {
+      const timer = setTimeout(() => {
+        setShowInfoPopup(false);
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [showInfoPopup]);
 
   // Save to localStorage on change
   useEffect(() => {
@@ -98,7 +108,7 @@ function App() {
     setShowClearConfirm(false);
   };
 
-  // Function to render current step content
+  // Function to render current step content (mobile only)
   const renderCurrentStep = () => {
     switch (currentStep) {
       case 1:
@@ -109,7 +119,7 @@ function App() {
             description="اطلاعات اصلی گزارش روزانه"
             color="blue"
           >
-            <div className="grid grid-cols-1 gap-4">
+            <div className="grid grid-cols-1 gap-3">
               <Input
                 label="تاریخ گزارش"
                 id="reportDate"
@@ -135,7 +145,7 @@ function App() {
             description="آمار مالی روزانه شعبه"
             color="green"
           >
-            <div className="space-y-4">
+            <div className="space-y-3">
               <Input
                 label="مجموع فروش"
                 id="totalSales"
@@ -152,7 +162,7 @@ function App() {
                 placeholder="0"
                 suffix="ریال"
               />
-              <div className="grid grid-cols-1 gap-4">
+              <div className="grid grid-cols-1 gap-3">
                 <Input
                   label="تعداد فاکتور"
                   id="invoiceCount"
@@ -180,11 +190,11 @@ function App() {
             description="اطلاعات شیفت‌های صبح و عصر"
             color="purple"
           >
-            <div className="space-y-6">
+            <div className="space-y-4">
               {/* Morning Shift */}
-              <div className="space-y-3">
+              <div className="space-y-2">
                 <h3 className="text-sm font-medium text-gray-700">مسئول شیفت صبح</h3>
-                <div className="grid grid-cols-1 gap-3">
+                <div className="grid grid-cols-1 gap-2">
                   <GenderSelector
                     label=""
                     value={formData.morningManagerGender}
@@ -203,9 +213,9 @@ function App() {
               </div>
 
               {/* Evening Shift */}
-              <div className="space-y-3">
+              <div className="space-y-2">
                 <h3 className="text-sm font-medium text-gray-700">مسئول شیفت عصر</h3>
-                <div className="grid grid-cols-1 gap-3">
+                <div className="grid grid-cols-1 gap-2">
                   <GenderSelector
                     label=""
                     value={formData.eveningManagerGender}
@@ -224,7 +234,7 @@ function App() {
               </div>
 
               {/* Attendance */}
-              <div className="grid grid-cols-1 gap-4">
+              <div className="grid grid-cols-1 gap-3">
                 <Input
                   label="تعداد حاضرین شیفت صبح"
                   id="morningAttendance"
@@ -242,7 +252,7 @@ function App() {
               </div>
 
               {/* Shutter Times */}
-              <div className="grid grid-cols-1 gap-4">
+              <div className="grid grid-cols-1 gap-3">
                 <div>
                   <Input
                     label="ساعت بالارفتن کرکره"
@@ -281,7 +291,7 @@ function App() {
               value={formData.todayNotes}
               onChange={(e) => updateField('todayNotes', e.target.value)}
               placeholder="حضور اقای چهرازی خانوم تهرانی.&#10;تحویل گرفتن ۱۲ عدد چراغ از لاله‌زار .&#10;حضور خانوم رییسی جهت تغییر چیدمان ."
-              rows={4}
+              rows={3}
               helperText="هر نکته در یک خط جدید"
             />
           </FormSection>
@@ -294,9 +304,9 @@ function App() {
             description="اطلاعات نظافت روزانه"
             color="cyan"
           >
-            <div className="space-y-6">
+            <div className="space-y-4">
               {/* Cleaning Times */}
-              <div className="grid grid-cols-1 gap-4">
+              <div className="grid grid-cols-1 gap-3">
                 <div>
                   <Input
                     label="ساعت شروع نظافت"
@@ -320,9 +330,9 @@ function App() {
               </div>
 
               {/* Cleaning Person */}
-              <div className="space-y-3">
+              <div className="space-y-2">
                 <h3 className="text-sm font-medium text-gray-700">انجام‌دهنده نظافت</h3>
-                <div className="grid grid-cols-1 gap-3">
+                <div className="grid grid-cols-1 gap-2">
                   <GenderSelector
                     label=""
                     value={formData.cleaningPersonGender}
@@ -420,7 +430,7 @@ function App() {
       <FormSection 
         title="شیفت‌ها" 
         icon={<Users className="w-5 h-5" />}
-        description="اطلاعات شیفت‌های صبح و عصر"
+        description="اطلاعات ش��فت‌های صبح و عصر"
         color="purple"
       >
         <div className="space-y-6">
@@ -591,44 +601,70 @@ function App() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50/30 via-white to-purple-50/20">
       {/* Premium Header with Gradient */}
-      <header className="sticky top-0 z-10 bg-gradient-to-r from-blue-500/5 via-indigo-500/5 to-purple-500/5 backdrop-blur-md border-b border-blue-100/30">
+      <header className="sticky top-0 z-20 bg-gradient-to-r from-blue-500/5 via-indigo-500/5 to-purple-500/5 backdrop-blur-md border-b border-blue-100/30">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-20">
-            <div className="flex items-center gap-4">
-              {/* Mobile Full Report Button */}
-              <button 
-                onClick={() => setShowMobileReport(true)}
-                className="lg:hidden flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 shadow-md hover:shadow-lg transition-shadow"
-              >
-                <FileText className="w-5 h-5 text-white" />
-              </button>
-              
-              <div className="flex items-center gap-4">
+          <div className="flex items-center justify-between h-16 lg:h-20">
+            {/* Logo Section - Center */}
+            <div className="flex-1 flex items-center justify-start">
+              <div className="flex items-center gap-3">
                 <div className="hidden lg:block premium-header">
                   <FileText className="w-6 h-6" />
                 </div>
                 <div>
-                  <h1 className="text-xl lg:text-2xl font-bold text-gray-900 tracking-tight bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                  <h1 className="text-lg lg:text-2xl font-bold text-gray-900 tracking-tight bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                     گزارش‌یار
                   </h1>
-                  <p className="text-xs lg:text-sm text-gray-600 mt-1">
+                  <p className="text-xs lg:text-sm text-gray-600 mt-0.5">
                     ساخت سریع گزارش روزانه شعبه
                   </p>
                 </div>
               </div>
             </div>
-            <div className="hidden md:flex items-center gap-2 px-4 py-2 bg-white rounded-xl border border-gray-100 shadow-sm">
-              <Calendar className="w-5 h-5 text-blue-500" />
-              <span className="text-base font-medium text-gray-900">{getTodayPersianDate()}</span>
+            
+            {/* Right Section - Date */}
+            <div className="hidden md:flex items-center gap-2 px-3 py-1.5 lg:px-4 lg:py-2 bg-white rounded-xl border border-gray-100 shadow-sm">
+              <Calendar className="w-4 h-4 lg:w-5 lg:h-5 text-blue-500" />
+              <span className="text-sm lg:text-base font-medium text-gray-900">{getTodayPersianDate()}</span>
+            </div>
+            
+            {/* Left Section - Mobile Report Button (Top Left in RTL) */}
+            <div className="flex-1 flex items-center justify-end">
+              <button 
+                onClick={() => setShowMobileReport(true)}
+                className="lg:hidden flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 shadow-md hover:shadow-lg transition-shadow flex-shrink-0"
+              >
+                <FileText className="w-5 h-5 text-white" />
+              </button>
             </div>
           </div>
         </div>
       </header>
 
       {/* Main Content Container */}
-      <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-10 page-padding">
-        {/* Premium Information Banner */}
-        <div className="mb-10">
+      <main className="max-w-6xl mx-auto px-3 sm:px-4 lg:px-8 py-4 lg:py-8 page-padding">
+        {/* Mobile Info Popup (2 seconds) */}
+        {showInfoPopup && (
+          <div className="lg:hidden fixed top-16 left-3 right-3 z-30 animate-fade-in">
+            <div className="bg-gradient-to-r from-blue-500/95 to-indigo-600/95 backdrop-blur-md rounded-xl border border-blue-300/30 p-3 shadow-lg">
+              <div className="flex items-start gap-2">
+                <div className="w-7 h-7 rounded-lg bg-white/20 backdrop-blur-sm flex items-center justify-center flex-shrink-0">
+                  <Info className="w-3.5 h-3.5 text-white" />
+                </div>
+                <div>
+                  <p className="text-xs font-bold text-white">
+                    اطلاعات به صورت خودکار ذخیره می‌شود
+                  </p>
+                  <p className="text-[11px] text-blue-100 mt-0.5">
+                    پس از پر کردن فرم، گزارش را کپی کنید
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Desktop Information Banner */}
+        <div className="hidden lg:block mb-8">
           <div className="info-banner">
             <div className="info-banner-icon">
               <Info className="w-5 h-5" />
@@ -644,38 +680,40 @@ function App() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-[55%_45%] gap-8 lg:gap-10">
-          {/* Left Column: Form */}
+        <div className="grid grid-cols-1 lg:grid-cols-[55%_45%] gap-6 lg:gap-8">
+          {/* Mobile Form Area */}
           <div className="lg:hidden">
-            {/* Mobile Stepper */}
+            {/* Mobile Stepper Only */}
             <MobileStepper
               currentStep={currentStep}
               onStepChange={handleStepChange}
+              onCopy={handleCopy}
             />
             
             {/* Mobile Form Step */}
-            <div className="mb-8">
+            <div className="mb-6">
               {renderCurrentStep()}
             </div>
 
-            {/* Mobile Navigation */}
-            <div className="lg:hidden flex justify-between items-center gap-4 mt-8">
+            {/* Mobile Navigation - ONLY in form steps, not in report */}
+            <div className="lg:hidden flex justify-between items-center gap-3 mt-6">
               {currentStep > 1 && (
                 <button
                   onClick={() => handleStepChange(currentStep - 1)}
                   className={`
-                    flex items-center justify-center gap-2 
-                    px-5 py-3 rounded-xl 
+                    flex items-center justify-center gap-1.5 
+                    px-4 py-2.5 rounded-lg
                     bg-gradient-to-r from-gray-100 to-gray-50 
                     border border-gray-200
                     text-gray-700 font-medium
                     transition-all duration-200
                     hover:bg-gradient-to-r hover:from-gray-50 hover:to-white
                     hover:border-gray-300 hover:shadow-sm
-                    min-h-[48px] min-w-[120px]
+                    min-h-[44px] min-w-[100px]
+                    text-sm
                   `}
                 >
-                  <ChevronRight className="w-5 h-5" />
+                  <ChevronRight className="w-4 h-4" />
                   <span>مرحله قبل</span>
                 </button>
               )}
@@ -684,19 +722,20 @@ function App() {
                 <button
                   onClick={() => handleStepChange(currentStep + 1)}
                   className={`
-                    flex items-center justify-center gap-2 
-                    px-5 py-3 rounded-xl 
+                    flex items-center justify-center gap-1.5 
+                    px-4 py-2.5 rounded-lg
                     bg-gradient-to-r from-blue-500 to-indigo-600
                     text-white font-bold
                     transition-all duration-200
                     hover:shadow-lg hover:shadow-blue-500/30
                     hover:from-blue-600 hover:to-indigo-700
-                    min-h-[48px] min-w-[120px]
+                    min-h-[44px] min-w-[100px]
+                    text-sm
                     ${currentStep > 1 ? 'flex-1' : 'w-full'}
                   `}
                 >
                   <span>مرحله بعد</span>
-                  <ChevronLeft className="w-5 h-5" />
+                  <ChevronLeft className="w-4 h-4" />
                 </button>
               )}
               
@@ -704,18 +743,19 @@ function App() {
                 <button
                   onClick={handleCopy}
                   className={`
-                    flex items-center justify-center gap-2 
-                    px-5 py-3 rounded-xl 
+                    flex items-center justify-center gap-1.5 
+                    px-4 py-2.5 rounded-lg
                     bg-gradient-to-r from-green-500 to-emerald-600
                     text-white font-bold
                     transition-all duration-200
                     hover:shadow-lg hover:shadow-green-500/30
                     hover:from-green-600 hover:to-emerald-700
-                    min-h-[48px]
+                    min-h-[44px]
                     w-full
+                    text-sm
                   `}
                 >
-                  <Check className="w-5 h-5" />
+                  <Check className="w-4 h-4" />
                   <span>تکمیل گزارش ✓</span>
                 </button>
               )}
@@ -723,12 +763,12 @@ function App() {
           </div>
 
           {/* Desktop Form */}
-          <div className="hidden lg:block space-y-8">
+          <div className="hidden lg:block space-y-6">
             {renderDesktopForm()}
           </div>
 
           {/* Right Column: Generated Report */}
-          <div className="lg:sticky lg:top-24 h-fit">
+          <div className="lg:sticky lg:top-20 h-fit">
             <ReportPreview
               title="گزارش تولید شده"
               report={generatedReport}
@@ -738,26 +778,6 @@ function App() {
           </div>
         </div>
       </main>
-
-      {/* Mobile Bottom Action Bar */}
-      <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-gradient-to-r from-blue-500/95 to-indigo-600/95 backdrop-blur-md border-t border-blue-300/30 p-4">
-        <button
-          onClick={handleCopy}
-          className={`premium-copy-button ${copied ? 'success' : ''}`}
-        >
-          {copied ? (
-            <>
-              <Check className="w-6 h-6" />
-              <span>گزارش کپی شد</span>
-            </>
-          ) : (
-            <>
-              <Copy className="w-6 h-5" />
-              <span>کپی گزارش</span>
-            </>
-          )}
-        </button>
-      </div>
 
       {/* Mobile Full Screen Report Modal */}
       {showMobileReport && (
@@ -793,7 +813,7 @@ function App() {
             </div>
           </div>
 
-          {/* Bottom Action Bar */}
+          {/* Bottom Action Bar - Copy button inside report modal */}
           <div className="fixed bottom-0 left-0 right-0 bg-gradient-to-r from-blue-500/95 to-indigo-600/95 backdrop-blur-md border-t border-blue-300/30 p-4">
             <button
               onClick={handleCopy}

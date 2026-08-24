@@ -493,3 +493,99 @@ textarea.premium-input {
     font-size: 14px;
   }
 }
+
+/* Fade in animation for popup */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.3s ease-out;
+}
+
+/* Hide scrollbar for mobile */
+.no-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari and Opera */
+}
+
+/* Mobile-specific improvements */
+@media (max-width: 640px) {
+  .mobile-padding {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+  
+  /* Ensure no horizontal overflow */
+  .premium-card {
+    margin-left: 0;
+    margin-right: 0;
+  }
+  
+  /* Mobile stepper responsiveness */
+  .mobile-stepper-container {
+    max-width: 100%;
+    overflow: hidden;
+  }
+}
+
+/* Compact mobile card styling */
+@media (max-width: 768px) {
+  .premium-card {
+    --card-padding: 16px;
+    --card-radius: 12px;
+  }
+  
+  .icon-container {
+    width: 36px;
+    height: 36px;
+  }
+  
+  .info-banner {
+    padding: 12px;
+  }
+  
+  .info-banner-icon {
+    width: 28px;
+    height: 28px;
+  }
+  
+  /* Compact header */
+  header {
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+  
+  /* Compact spacing in forms */
+  .form-section-mobile {
+    margin-bottom: 12px;
+  }
+}
+
+/* Extra small mobile */
+@media (max-width: 375px) {
+  .premium-card {
+    --card-padding: 12px;
+  }
+  
+  .icon-container {
+    width: 32px;
+    height: 32px;
+  }
+  
+  .premium-input {
+    height: 44px;
+    font-size: 14px;
+  }
+}

@@ -27,7 +27,7 @@ export function FormSection({ title, icon, description, color = 'blue', children
         color={color}
       />
       <div className="section-divider"></div>
-      <div className="space-y-6 pt-4">
+      <div className="space-y-4 lg:space-y-6 pt-3 lg:pt-4">
         {children}
       </div>
     </div>
