@@ -602,39 +602,37 @@ function App() {
     <div className="min-h-screen bg-gradient-to-br from-blue-50/30 via-white to-purple-50/20">
       {/* Premium Header with Gradient */}
       <header className="sticky top-0 z-20 bg-gradient-to-r from-blue-500/5 via-indigo-500/5 to-purple-500/5 backdrop-blur-md border-b border-blue-100/30">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16 lg:h-20">
-            {/* Logo Section - Center */}
+        <div className="max-w-6xl mx-auto px-3 sm:px-4 lg:px-6">
+          <div className="flex items-center justify-between h-14 lg:h-16">
+            {/* Logo Section - Left in RTL */}
             <div className="flex-1 flex items-center justify-start">
-              <div className="flex items-center gap-3">
-                <div className="hidden lg:block premium-header">
-                  <FileText className="w-6 h-6" />
-                </div>
-                <div>
-                  <h1 className="text-lg lg:text-2xl font-bold text-gray-900 tracking-tight bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                    گزارش‌یار
-                  </h1>
-                  <p className="text-xs lg:text-sm text-gray-600 mt-0.5">
-                    ساخت سریع گزارش روزانه شعبه
-                  </p>
+              <div className="flex items-center gap-2 lg:gap-3">
+                <button 
+                  onClick={() => setShowMobileReport(true)}
+                  className="lg:hidden flex items-center justify-center w-8 h-8 lg:w-10 lg:h-10 rounded-lg lg:rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 shadow-md hover:shadow-lg transition-shadow flex-shrink-0"
+                >
+                  <FileText className="w-4 h-4 lg:w-5 lg:h-5 text-white" />
+                </button>
+                <div className="flex items-center gap-2">
+                  <div className="hidden lg:flex premium-header">
+                    <FileText className="w-5 h-5 lg:w-6 lg:h-6" />
+                  </div>
+                  <div>
+                    <h1 className="text-base lg:text-xl font-bold text-gray-900 tracking-tight bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                      گزارش‌یار
+                    </h1>
+                    <p className="text-xs lg:text-sm text-gray-600">
+                      ساخت سریع گزارش روزانه شعبه
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
             
             {/* Right Section - Date */}
-            <div className="hidden md:flex items-center gap-2 px-3 py-1.5 lg:px-4 lg:py-2 bg-white rounded-xl border border-gray-100 shadow-sm">
-              <Calendar className="w-4 h-4 lg:w-5 lg:h-5 text-blue-500" />
-              <span className="text-sm lg:text-base font-medium text-gray-900">{getTodayPersianDate()}</span>
-            </div>
-            
-            {/* Left Section - Mobile Report Button (Top Left in RTL) */}
-            <div className="flex-1 flex items-center justify-end">
-              <button 
-                onClick={() => setShowMobileReport(true)}
-                className="lg:hidden flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 shadow-md hover:shadow-lg transition-shadow flex-shrink-0"
-              >
-                <FileText className="w-5 h-5 text-white" />
-              </button>
+            <div className="hidden md:flex items-center gap-1 lg:gap-2 px-2 lg:px-3 py-1 lg:py-1.5 bg-white rounded-lg lg:rounded-xl border border-gray-100 shadow-sm">
+              <Calendar className="w-4 h-4 text-blue-500" />
+              <span className="text-xs lg:text-sm font-medium text-gray-900">{getTodayPersianDate()}</span>
             </div>
           </div>
         </div>
