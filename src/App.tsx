@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Copy, Trash2, Check, FileText, Info } from 'lucide-react';
 import type { FormData } from './types';
-import { generateReport, getTodayPersianDate } from './utils/generateReport';
+import { generateReport, getTodayPersianDate, formatNumberWithSlashSeparators } from './utils/generateReport';
 import { saveFormData, loadFormData, clearFormData } from './utils/storage';
 import { FormSection } from './components/FormSection';
 import { Input } from './components/Input';
@@ -32,17 +32,12 @@ const initialFormData: FormData = {
 };
 
 function App() {
-  const [formData, setFormData] = useState<FormData>(initialFormData);
+  const [formData, setFormData] = useState<FormData>(() => {
+    const saved = loadFormData();
+    return saved ? { ...initialFormData, ...saved } : initialFormData;
+  });
   const [copied, setCopied] = useState(false);
   const [showClearConfirm, setShowClearConfirm] = useState(false);
-
-  // Load from localStorage on mount
-  useEffect(() => {
-    const saved = loadFormData();
-    if (saved) {
-      setFormData(saved);
-    }
-  }, []);
 
   // Save to localStorage on change
   useEffect(() => {
@@ -50,7 +45,15 @@ function App() {
   }, [formData]);
 
   const updateField = <K extends keyof FormData>(field: K, value: FormData[K]) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
+    // Format sales fields as they are entered
+    if (field === 'totalSales' || field === 'totalDiscount' || 
+        field === 'invoiceCount' || field === 'averageInvoice') {
+      // Format the value with slash separators
+      const formattedValue = formatNumberWithSlashSeparators(value as string);
+      setFormData(prev => ({ ...prev, [field]: formattedValue }));
+    } else {
+      setFormData(prev => ({ ...prev, [field]: value }));
+    }
   };
 
   const generatedReport = generateReport(formData);
@@ -126,28 +129,28 @@ function App() {
                 id="totalSales"
                 value={formData.totalSales}
                 onChange={(e) => updateField('totalSales', e.target.value)}
-                placeholder="۶۶۲/۴۹۰/۰۰۰"
+                placeholder="662/490/000"
               />
               <Input
                 label="مجموع تخفیف (ریال)"
                 id="totalDiscount"
                 value={formData.totalDiscount}
                 onChange={(e) => updateField('totalDiscount', e.target.value)}
-                placeholder="۰"
+                placeholder="0"
               />
               <Input
                 label="تعداد فاکتور"
                 id="invoiceCount"
                 value={formData.invoiceCount}
                 onChange={(e) => updateField('invoiceCount', e.target.value)}
-                placeholder="۱۵"
+                placeholder="15"
               />
               <Input
                 label="میانگین مبلغ هر فاکتور"
                 id="averageInvoice"
                 value={formData.averageInvoice}
                 onChange={(e) => updateField('averageInvoice', e.target.value)}
-                placeholder="۴۴/۱۶۶/۰۰۰"
+                placeholder="44/166/000"
               />
             </FormSection>
 
