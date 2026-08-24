@@ -9,8 +9,7 @@ import {
   BadgeDollarSign, 
   Users, 
   MessageSquare, 
-  Sparkles,
-  ChevronRight
+  Sparkles
 } from 'lucide-react';
 import type { FormData } from './types';
 import { generateReport, getTodayPersianDate, formatNumberWithSlashSeparators } from './utils/generateReport';
@@ -695,71 +694,7 @@ function App() {
               {renderCurrentStep()}
             </div>
 
-            {/* Mobile Navigation - ONLY in form steps, not in report */}
-            <div className="lg:hidden flex justify-between items-center gap-3 mt-6">
-              {currentStep > 1 && (
-                <button
-                  onClick={() => handleStepChange(currentStep - 1)}
-                  className={`
-                    flex items-center justify-center gap-1.5 
-                    px-4 py-2.5 rounded-lg
-                    bg-gradient-to-r from-gray-100 to-gray-50 
-                    border border-gray-200
-                    text-gray-700 font-medium
-                    transition-all duration-200
-                    hover:bg-gradient-to-r hover:from-gray-50 hover:to-white
-                    hover:border-gray-300 hover:shadow-sm
-                    min-h-[44px] min-w-[100px]
-                    text-sm
-                  `}
-                >
-                  <ChevronRight className="w-4 h-4" />
-                  <span>مرحله قبل</span>
-                </button>
-              )}
-              
-              {currentStep < 5 && (
-                <button
-                  onClick={() => handleStepChange(currentStep + 1)}
-                  className={`
-                    flex items-center justify-center gap-1.5 
-                    px-4 py-2.5 rounded-lg
-                    bg-gradient-to-r from-blue-500 to-indigo-600
-                    text-white font-bold
-                    transition-all duration-200
-                    hover:shadow-lg hover:shadow-blue-500/30
-                    hover:from-blue-600 hover:to-indigo-700
-                    min-h-[44px] min-w-[100px]
-                    text-sm
-                    ${currentStep > 1 ? 'flex-1' : 'w-full'}
-                  `}
-                >
-                  <span>مرحله بعد</span>
-                  <ChevronLeft className="w-4 h-4" />
-                </button>
-              )}
-              
-              {currentStep === 5 && (
-                <button
-                  onClick={handleCopy}
-                  className={`
-                    flex items-center justify-center gap-1.5 
-                    px-4 py-2.5 rounded-lg
-                    bg-gradient-to-r from-green-500 to-emerald-600
-                    text-white font-bold
-                    transition-all duration-200
-                    hover:shadow-lg hover:shadow-green-500/30
-                    hover:from-green-600 hover:to-emerald-700
-                    min-h-[44px]
-                    w-full
-                    text-sm
-                  `}
-                >
-                  <Check className="w-4 h-4" />
-                  <span>تکمیل گزارش ✓</span>
-                </button>
-              )}
-            </div>
+
           </div>
 
           {/* Desktop Form */}
