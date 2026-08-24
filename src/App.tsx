@@ -9,7 +9,8 @@ import {
   BadgeDollarSign, 
   Users, 
   MessageSquare, 
-  Sparkles
+  Sparkles,
+  ChevronRight
 } from 'lucide-react';
 import type { FormData } from './types';
 import { generateReport, getTodayPersianDate, formatNumberWithSlashSeparators } from './utils/generateReport';
