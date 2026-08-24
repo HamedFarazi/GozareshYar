@@ -6,19 +6,21 @@ interface GenderSelectorProps {
 
 export function GenderSelector({ label, value, onChange }: GenderSelectorProps) {
   return (
-    <div className="space-y-2">
-      <label className="block text-sm font-medium text-gray-700">
-        {label}
-      </label>
-      <div className="inline-flex rounded-lg border border-gray-200 bg-gray-50 p-1">
+    <div className="space-y-3">
+      {label && (
+        <label className="block text-sm font-medium text-gray-700">
+          {label}
+        </label>
+      )}
+      <div className="inline-flex rounded-xl border border-gray-200 bg-gray-50/50 p-1 gap-1">
         <button
           type="button"
           onClick={() => onChange('آقای')}
           className={`
-            px-5 py-2.5 rounded-lg text-sm font-medium transition-all duration-150
+            px-6 py-3 rounded-lg text-sm font-medium transition-all duration-150
             ${value === 'آقای'
-              ? 'bg-white text-blue-600 shadow-sm border border-gray-200'
-              : 'text-gray-600 hover:text-gray-900 hover:bg-white/60'
+              ? 'gender-selector-selected'
+              : 'gender-selector-unselected'
             }
           `}
         >
@@ -28,10 +30,10 @@ export function GenderSelector({ label, value, onChange }: GenderSelectorProps) 
           type="button"
           onClick={() => onChange('خانم')}
           className={`
-            px-5 py-2.5 rounded-lg text-sm font-medium transition-all duration-150
+            px-6 py-3 rounded-lg text-sm font-medium transition-all duration-150
             ${value === 'خانم'
-              ? 'bg-white text-blue-600 shadow-sm border border-gray-200'
-              : 'text-gray-600 hover:text-gray-900 hover:bg-white/60'
+              ? 'gender-selector-selected'
+              : 'gender-selector-unselected'
             }
           `}
         >

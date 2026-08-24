@@ -1,5 +1,16 @@
 import { useState, useEffect } from 'react';
-import { Copy, Trash2, Check, FileText, Info, Calendar, Building, CheckCircle, Download } from 'lucide-react';
+import { 
+  Copy, 
+  Trash2, 
+  Check, 
+  FileText, 
+  Info, 
+  Calendar, 
+  BadgeDollarSign, 
+  Users, 
+  MessageSquare, 
+  Sparkles
+} from 'lucide-react';
 import type { FormData } from './types';
 import { generateReport, getTodayPersianDate, formatNumberWithSlashSeparators } from './utils/generateReport';
 import { saveFormData, loadFormData, clearFormData } from './utils/storage';
@@ -8,6 +19,7 @@ import { Input } from './components/Input';
 import { Textarea } from './components/Textarea';
 import { GenderSelector } from './components/GenderSelector';
 import { Button } from './components/Button';
+import { ReportPreview } from './components/ReportPreview';
 
 const initialFormData: FormData = {
   reportDate: getTodayPersianDate(),
@@ -76,54 +88,61 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
-      {/* Compact Header */}
-      <header className="sticky top-0 z-10 bg-white/90 backdrop-blur-sm border-b border-gray-200 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <div className="flex items-center gap-3">
-              <div className="bg-blue-50 p-2 rounded-lg">
-                <FileText className="w-6 h-6 text-blue-600" />
+    <div className="min-h-screen bg-gradient-to-br from-blue-50/30 via-white to-purple-50/20">
+      {/* Premium Header with Gradient */}
+      <header className="sticky top-0 z-10 bg-gradient-to-r from-blue-500/5 via-indigo-500/5 to-purple-500/5 backdrop-blur-md border-b border-blue-100/30">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-20">
+            <div className="flex items-center gap-4">
+              <div className="premium-header">
+                <FileText className="w-6 h-6" />
               </div>
               <div>
-                <h1 className="text-xl font-bold text-gray-900">
+                <h1 className="text-2xl font-bold text-gray-900 tracking-tight bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                   گزارش‌یار
                 </h1>
-                <p className="text-xs text-gray-600 mt-0.5">
+                <p className="text-sm text-gray-600 mt-1">
                   ساخت سریع گزارش روزانه شعبه
                 </p>
               </div>
             </div>
-            <div className="hidden sm:flex items-center gap-2 text-sm text-gray-600">
-              <Calendar className="w-4 h-4" />
-              <span>{getTodayPersianDate()}</span>
+            <div className="hidden md:flex items-center gap-2 px-4 py-2 bg-white rounded-xl border border-gray-100 shadow-sm">
+              <Calendar className="w-5 h-5 text-blue-500" />
+              <span className="text-base font-medium text-gray-900">{getTodayPersianDate()}</span>
             </div>
           </div>
         </div>
       </header>
 
-      {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8">
-        {/* Info Banner */}
-        <div className="mb-6">
-          <div className="bg-blue-50 border border-blue-100 rounded-xl p-4 flex items-start gap-3">
-            <Info className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
-            <div className="flex-1">
-              <p className="text-sm text-blue-800">
-                اطلاعات فرم به صورت خودکار در مرورگر شما ذخیره می‌شود.
+      {/* Main Content Container */}
+      <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-10 page-padding">
+        {/* Premium Information Banner */}
+        <div className="mb-10">
+          <div className="info-banner">
+            <div className="info-banner-icon">
+              <Info className="w-5 h-5" />
+            </div>
+            <div>
+              <p className="text-base text-blue-800 font-bold">
+                اطلاعات به صورت خودکار ذخیره می‌شود
               </p>
-              <p className="text-xs text-blue-700 mt-1">
-                گزارش آماده شده را کپی کرده و در گروه‌های کاری ارسال کنید.
+              <p className="text-sm text-blue-700 mt-2">
+                پس از پر کردن فرم، گزارش را کپی کرده و در گروه‌های کاری ارسال کنید
               </p>
             </div>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-[55%_45%] gap-8 lg:gap-10">
           {/* Left Column: Form */}
-          <div className="space-y-6">
+          <div className="space-y-8">
             {/* Section 1: Report Info */}
-            <FormSection title="اطلاعات گزارش">
+            <FormSection 
+              title="اطلاعات گزارش" 
+              icon={<FileText className="w-5 h-5" />}
+              description="اطلاعات اصلی گزارش روزانه"
+              color="blue"
+            >
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <Input
                   label="تاریخ گزارش"
@@ -131,7 +150,6 @@ function App() {
                   value={formData.reportDate}
                   onChange={(e) => updateField('reportDate', e.target.value)}
                   placeholder="۱۴۰۵/۰۶/۰۱"
-                  helperText="فرمت: سال/ماه/روز"
                 />
                 <Input
                   label="نام شعبه"
@@ -139,28 +157,33 @@ function App() {
                   value={formData.branchName}
                   onChange={(e) => updateField('branchName', e.target.value)}
                   placeholder="هایپراستار"
-                  helperText="نام کامل شعبه"
                 />
               </div>
             </FormSection>
 
             {/* Section 2: Sales Stats */}
-            <FormSection title="آمار فروش">
+            <FormSection 
+              title="آمار فروش" 
+              icon={<BadgeDollarSign className="w-5 h-5" />}
+              description="آمار مالی روزانه شعبه"
+              color="green"
+            >
               <div className="space-y-4">
                 <Input
-                  label="مجموع فروش (ریال)"
+                  label="مجموع فروش"
                   id="totalSales"
                   value={formData.totalSales}
                   onChange={(e) => updateField('totalSales', e.target.value)}
                   placeholder="662/490/000"
-                  helperText="مثال: 44/600 یعنی 44 هزار و 600 ریال"
+                  suffix="ریال"
                 />
                 <Input
-                  label="مجموع تخفیف (ریال)"
+                  label="مجموع تخفیف"
                   id="totalDiscount"
                   value={formData.totalDiscount}
                   onChange={(e) => updateField('totalDiscount', e.target.value)}
                   placeholder="0"
+                  suffix="ریال"
                 />
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <Input
@@ -171,19 +194,25 @@ function App() {
                     placeholder="15"
                   />
                   <Input
-                    label="میانگین مبلغ هر فاکتور"
+                    label="میانگین هر فاکتور"
                     id="averageInvoice"
                     value={formData.averageInvoice}
                     onChange={(e) => updateField('averageInvoice', e.target.value)}
                     placeholder="44/166/000"
+                    suffix="ریال"
                   />
                 </div>
               </div>
             </FormSection>
 
             {/* Section 3: Shifts */}
-            <FormSection title="شیفت‌ها">
-              <div className="space-y-5">
+            <FormSection 
+              title="شیفت‌ها" 
+              icon={<Users className="w-5 h-5" />}
+              description="اطلاعات شیفت‌های صبح و عصر"
+              color="purple"
+            >
+              <div className="space-y-6">
                 {/* Morning Shift */}
                 <div className="space-y-3">
                   <h3 className="text-sm font-medium text-gray-700">مسئول شیفت صبح</h3>
@@ -253,7 +282,7 @@ function App() {
                       type="time"
                       value={formData.shutterUpTime}
                       onChange={(e) => updateField('shutterUpTime', e.target.value)}
-                      helperText="فرمت ۲۴ ساعته"
+                      isTimeInput={true}
                     />
                   </div>
                   <div>
@@ -263,7 +292,7 @@ function App() {
                       type="time"
                       value={formData.shutterDownTime}
                       onChange={(e) => updateField('shutterDownTime', e.target.value)}
-                      helperText="فرمت ۲۴ ساعته"
+                      isTimeInput={true}
                     />
                   </div>
                 </div>
@@ -271,7 +300,12 @@ function App() {
             </FormSection>
 
             {/* Section 4: Today's Notes */}
-            <FormSection title="نکات امروز">
+            <FormSection 
+              title="نکات امروز" 
+              icon={<MessageSquare className="w-5 h-5" />}
+              description="رویدادها و نکات مهم روز"
+              color="amber"
+            >
               <Textarea
                 label="نکات و رویدادهای امروز"
                 id="todayNotes"
@@ -284,8 +318,13 @@ function App() {
             </FormSection>
 
             {/* Section 5: Cleaning */}
-            <FormSection title="نظافت">
-              <div className="space-y-5">
+            <FormSection 
+              title="نظافت" 
+              icon={<Sparkles className="w-5 h-5" />}
+              description="اطلاعات نظافت روزانه"
+              color="cyan"
+            >
+              <div className="space-y-6">
                 {/* Cleaning Times */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
@@ -295,7 +334,7 @@ function App() {
                       type="time"
                       value={formData.cleaningStartTime}
                       onChange={(e) => updateField('cleaningStartTime', e.target.value)}
-                      helperText="فرمت ۲۴ ساعته"
+                      isTimeInput={true}
                     />
                   </div>
                   <div>
@@ -305,7 +344,7 @@ function App() {
                       type="time"
                       value={formData.cleaningEndTime}
                       onChange={(e) => updateField('cleaningEndTime', e.target.value)}
-                      helperText="فرمت ۲۴ ساعته"
+                      isTimeInput={true}
                     />
                   </div>
                 </div>
@@ -333,13 +372,13 @@ function App() {
               </div>
             </FormSection>
 
-            {/* Action Buttons - Form Side */}
-            <div className="flex gap-3">
+            {/* Clear Form Button */}
+            <div className="pt-4">
               <Button
                 variant="secondary"
                 icon={<Trash2 className="w-4 h-4" />}
                 onClick={() => setShowClearConfirm(true)}
-                className="flex-1"
+                fullWidth
               >
                 پاک کردن فرم
               </Button>
@@ -348,103 +387,58 @@ function App() {
 
           {/* Right Column: Generated Report */}
           <div className="lg:sticky lg:top-24 h-fit">
-            <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
-              {/* Report Header */}
-              <div className="px-6 py-4 border-b border-gray-100 bg-gradient-to-r from-blue-50 to-white">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className="bg-white p-2 rounded-lg border border-blue-100">
-                      <Download className="w-5 h-5 text-blue-600" />
-                    </div>
-                    <div>
-                      <h2 className="text-lg font-semibold text-gray-900">
-                        گزارش تولید شده
-                      </h2>
-                      <div className="flex items-center gap-2 mt-0.5">
-                        <CheckCircle className="w-3.5 h-3.5 text-green-500" />
-                        <span className="text-xs text-green-600 font-medium">
-                          آماده ارسال
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="hidden sm:block">
-                    <Building className="w-5 h-5 text-gray-400" />
-                  </div>
-                </div>
-              </div>
-              
-              {/* Report Content */}
-              <div className="p-6">
-                <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 min-h-[600px] max-h-[600px] overflow-y-auto">
-                  <pre className="whitespace-pre-wrap font-medium text-gray-800 text-base leading-relaxed tracking-wide font-sans">
-                    {generatedReport}
-                  </pre>
-                </div>
-              </div>
-
-              {/* Action Buttons - Report Side */}
-              <div className="px-6 pb-6">
-                <div className="space-y-3">
-                  <Button
-                    variant={copied ? "success" : "primary"}
-                    size="lg"
-                    icon={copied ? <Check className="w-5 h-5" /> : <Copy className="w-5 h-5" />}
-                    onClick={handleCopy}
-                    className="w-full py-4"
-                  >
-                    {copied ? 'گزارش کپی شد ✓' : 'کپی گزارش'}
-                  </Button>
-                  <p className="text-xs text-center text-gray-500">
-                    گزارش کپی شده را در گروه‌های کاری پیست کنید
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Quick Tips */}
-            <div className="mt-6 bg-white rounded-xl border border-gray-200 p-4">
-              <div className="flex items-start gap-3">
-                <div className="bg-blue-50 p-2 rounded-lg">
-                  <Info className="w-4 h-4 text-blue-600" />
-                </div>
-                <div>
-                  <h4 className="text-sm font-medium text-gray-900 mb-1">راهنمای سریع</h4>
-                  <ul className="text-xs text-gray-600 space-y-1">
-                    <li>• فرم را پر کنید و گزارش به صورت زنده تولید می‌شود</li>
-                    <li>• اعداد فروش با جداکننده / فرمت می‌شوند</li>
-                    <li>• زمان‌ها به صورت ۲۴ ساعته ثبت می‌شوند</li>
-                    <li>• اطلاعات به صورت خودکار ذخیره می‌شود</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
+            <ReportPreview
+              title="گزارش تولید شده"
+              report={generatedReport}
+              copied={copied}
+              onCopy={handleCopy}
+            />
           </div>
         </div>
       </main>
 
+      {/* Mobile Bottom Action Bar */}
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-gradient-to-r from-blue-500/95 to-indigo-600/95 backdrop-blur-md border-t border-blue-300/30 p-4">
+        <button
+          onClick={handleCopy}
+          className={`premium-copy-button ${copied ? 'success' : ''}`}
+        >
+          {copied ? (
+            <>
+              <Check className="w-6 h-6" />
+              <span>گزارش کپی شد</span>
+            </>
+          ) : (
+            <>
+              <Copy className="w-6 h-5" />
+              <span>کپی گزارش</span>
+            </>
+          )}
+        </button>
+      </div>
+
       {/* Clear Confirmation Modal */}
       {showClearConfirm && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-xl max-w-md w-full p-6 shadow-2xl">
+        <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl">
             <div className="flex items-center gap-3 mb-4">
-              <div className="bg-red-50 p-2 rounded-lg">
-                <Trash2 className="w-5 h-5 text-red-600" />
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-red-500 to-pink-600 flex items-center justify-center">
+                <Trash2 className="w-5 h-5 text-white" />
               </div>
               <div>
-                <h3 className="text-lg font-semibold text-gray-900">
+                <h3 className="text-lg font-bold text-gray-900">
                   پاک کردن فرم
                 </h3>
                 <p className="text-sm text-gray-600 mt-0.5">
-                  تمام اطلاعات فرم پاک خواهد شد
+                  تمام اطلاعات پاک خواهد شد
                 </p>
               </div>
             </div>
             
             <p className="text-gray-700 mb-6">
               آیا مطمئن هستید که می‌خواهید تمام اطلاعات فرم را پاک کنید؟
-              <span className="block text-sm text-gray-500 mt-1">
-                این عمل قابل بازگشت نیست.
+              <span className="block text-sm text-gray-500 mt-2">
+                این عمل قابل بازگشت نیست. اطلاعات ذخیره‌شده در مرورگر نیز پاک می‌شود.
               </span>
             </p>
             
@@ -467,33 +461,6 @@ function App() {
           </div>
         </div>
       )}
-
-      {/* Mobile Bottom Action Bar */}
-      <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 shadow-lg">
-        <Button
-          variant={copied ? "success" : "primary"}
-          size="lg"
-          icon={copied ? <Check className="w-5 h-5" /> : <Copy className="w-5 h-5" />}
-          onClick={handleCopy}
-          className="w-full"
-        >
-          {copied ? 'گزارش کپی شد ✓' : 'کپی گزارش'}
-        </Button>
-      </div>
-
-      {/* Footer */}
-      <footer className="mt-12 py-6 border-t border-gray-200 bg-white/50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
-            <p className="text-sm text-gray-600">
-              گزارش‌یار • ابزار داخلی مدیریت شعبه
-            </p>
-            <p className="text-xs text-gray-500 mt-1">
-              طراحی شده برای استفاده سریع و آسان از موبایل و دسکتاپ
-            </p>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 }
