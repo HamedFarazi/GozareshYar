@@ -6,30 +6,34 @@ interface GenderSelectorProps {
 
 export function GenderSelector({ label, value, onChange }: GenderSelectorProps) {
   return (
-    <div>
-      <label className="block text-sm font-medium text-gray-700 mb-2">
+    <div className="space-y-2">
+      <label className="block text-sm font-medium text-gray-700">
         {label}
       </label>
-      <div className="flex gap-3">
+      <div className="inline-flex rounded-lg border border-gray-200 bg-gray-50 p-1">
         <button
           type="button"
           onClick={() => onChange('آقای')}
-          className={`flex-1 px-4 py-2 rounded-md border-2 transition-all ${
-            value === 'آقای'
-              ? 'border-blue-500 bg-blue-50 text-blue-700 font-medium'
-              : 'border-gray-300 bg-white text-gray-700 hover:border-gray-400'
-          }`}
+          className={`
+            px-5 py-2.5 rounded-lg text-sm font-medium transition-all duration-150
+            ${value === 'آقای'
+              ? 'bg-white text-blue-600 shadow-sm border border-gray-200'
+              : 'text-gray-600 hover:text-gray-900 hover:bg-white/60'
+            }
+          `}
         >
           آقای
         </button>
         <button
           type="button"
           onClick={() => onChange('خانم')}
-          className={`flex-1 px-4 py-2 rounded-md border-2 transition-all ${
-            value === 'خانم'
-              ? 'border-blue-500 bg-blue-50 text-blue-700 font-medium'
-              : 'border-gray-300 bg-white text-gray-700 hover:border-gray-400'
-          }`}
+          className={`
+            px-5 py-2.5 rounded-lg text-sm font-medium transition-all duration-150
+            ${value === 'خانم'
+              ? 'bg-white text-blue-600 shadow-sm border border-gray-200'
+              : 'text-gray-600 hover:text-gray-900 hover:bg-white/60'
+            }
+          `}
         >
           خانم
         </button>
